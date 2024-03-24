@@ -1,21 +1,13 @@
-// Function to calculate net salary
 const calculateNetSalary = () => {
-    // Get basic salary and benefits input values
     const basicSalary = parseFloat(document.getElementById('basicSalary').value);
     const benefits = parseFloat(document.getElementById('benefits').value) || 0;
-    // Calculate gross salary
     const grossSalary = basicSalary + benefits;
   
-    // Calculate PAYE (Tax)
     const payee = calculatePAYE(grossSalary);
-    // Calculate NHIF deductions
     const nhifDeductions = calculateNHIFDeductions(grossSalary);
-    // Calculate NSSF deductions
     const nssfDeductions = calculateNSSFDeductions(grossSalary);
-    // Calculate net salary
     const netSalary = grossSalary - payee - nhifDeductions - nssfDeductions;
   
-    //  results
     const resultsDiv = document.getElementById('results');
     resultsDiv.style.display = 'block';
   
@@ -24,13 +16,11 @@ const calculateNetSalary = () => {
     document.getElementById('nhifDeductionsAmount').textContent = nhifDeductions.toFixed(2);
     document.getElementById('nssfDeductionsAmount').textContent = nssfDeductions.toFixed(2);
     document.getElementById('netSalaryAmount').textContent = netSalary.toFixed(2);
-};
+  };
   
-// Function to calculate PAYE (Tax)
-const calculatePAYE = (grossSalary) => {
+  const calculatePAYE = (grossSalary) => {
     let tax = 0;
   
-// Calculate tax based on tax brackets and rates
     if (grossSalary <= 24000) {
       tax = grossSalary * 0.10;
     } else if (grossSalary <= 32333) {
@@ -44,17 +34,63 @@ const calculatePAYE = (grossSalary) => {
     }
   
     return tax;
-};
+  };
   
-// Function to calculate NHIF deductions
-const calculateNHIFDeductions = (grossSalary) => {
-    // NHIF deduction calculation based on provided rates
-
-};
+  const calculateNHIFDeductions = (grossSalary) => {
+    if (grossSalary <= 5999) {
+      return 150;
+    } else if (grossSalary <= 7999) {
+      return 300;
+    } else if (grossSalary <= 11999) {
+      return 400;
+    } else if (grossSalary <= 14999) {
+      return 500;
+    } else if (grossSalary <= 19999) {
+      return 600;
+    } else if (grossSalary <= 24999) {
+      return 750;
+    } else if (grossSalary <= 29999) {
+      return 850;
+    } else if (grossSalary <= 34999) {
+      return 900;
+    } else if (grossSalary <= 39999) {
+      return 950;
+    } else if (grossSalary <= 44999) {
+      return 1000;
+    } else if (grossSalary <= 49999) {
+      return 1100;
+    } else if (grossSalary <= 59999) {
+      return 1200;
+    } else if (grossSalary <= 69999) {
+      return 1300;
+    } else if (grossSalary <= 79999) {
+      return 1400;
+    } else if (grossSalary <= 89999) {
+      return 1500;
+    } else if (grossSalary <= 99999) {
+      return 1600;
+    } else {
+      return 1700;
+    }
+  };
   
-// Function to calculate NSSF deductions
-
-const calculateNSSFDeductions = (grossSalary) => {
-    // NSSF deduction calculation
-};
+  const calculateNSSFDeductions = (grossSalary) => {
+    const tierIUpperLimit = 7000;
+    const tierIRate = 0.06;
+    const tierIIUpperLimit = 36000;
+    const tierIIRate = 0.06;
+  
+    let nssfDeduction = 0;
+  
+    if (grossSalary <= tierIUpperLimit) {
+      nssfDeduction = grossSalary * tierIRate;
+    } else {
+      nssfDeduction = tierIUpperLimit * tierIRate;
+      if (grossSalary > tierIIUpperLimit) {
+        nssfDeduction += (grossSalary - tierIIUpperLimit) * tierIIRate;
+      }
+    }
+  
+    return nssfDeduction;
+  };
   
